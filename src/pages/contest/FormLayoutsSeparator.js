@@ -1,5 +1,5 @@
 // ** React Imports
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Card from '@mui/material/Card'
@@ -25,16 +25,39 @@ import DatePicker from 'react-datepicker'
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import router from 'next/router'
+import router, { useRouter } from 'next/router'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Contest Year' autoComplete='off' />
 })
 
 const FormLayoutsSeparator = () => {
+  const router = useRouter();
+
   // ** States
   const [language, setLanguage] = useState([])
   const [date, setDate] = useState(null)
+  const [contest, setContest] = useState({
+    yr: router.query.yr || new Date().getFullYear(),
+    sn: router.query.sn || '',
+    delYn: 'N'
+  })
+  
+  useEffect(() => {
+    if (router.query.yr != undefined) {
+      fetch("http://localhost:8080/v1/api/dypc/get", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contest),
+      }).then((res) => res.json())
+        // .catch((error) => console.log(error))
+        .then((res) => {
+          setContest(res)
+        });
+    }
+  }, [])
 
   const [values, setValues] = useState({
     password: '',
@@ -74,9 +97,47 @@ const FormLayoutsSeparator = () => {
     setLanguage(event.target.value)
   }
 
+  const handleContestChange = event => {
+    setContest({ ...contest, [event.target.name]: event.target.value })
+  }
+
+  const handleYrChange = date => {
+    setDate(date);
+    setContest({ ...contest, 'yr': date.getFullYear() })
+  }
+
+  const insert = () => {
+    fetch("http://localhost:8080/v1/api/dypc/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(contest),
+    }).then((res) => res.json())
+      // .catch((error) => console.log(error))
+      .then((res) => {
+        router.push("/contest")
+      });
+  }
+
+  const del = () => {
+    fetch("http://localhost:8080/v1/api/dypc/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(contest),
+    }).then((res) => router.push("/contest"))
+      // .catch((error) => console.log(error))
+      /*.then((res) => {
+        console.log(res);
+        router.push("/contest")
+      });*/
+  }
+
   return (
     <Card>
-      <CardHeader title='Multi Column with Form Separator' titleTypographyProps={{ variant: 'h6' }} />
+      <CardHeader title='Register Contest' titleTypographyProps={{ variant: 'h6' }} />
       <Divider sx={{ margin: 0 }} />
       <form onSubmit={e => e.preventDefault()}>
         <CardContent>
@@ -88,23 +149,24 @@ const FormLayoutsSeparator = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <DatePicker
-                selected={date}
+                selected={new Date(contest.yr,1,1) || date}
                 dateFormat="yyyy"
                 showYearPicker
                 placeholderText='YYYY'
                 customInput={<CustomInput />}
                 id='form-layouts-separator-date'
-                onChange={date => setDate(date)}
+                // onChange={date => setDate(date)}
+                onChange={date => handleYrChange(date)}
               />
             </Grid>
             {/* <Grid item xs={12} sm={6}>
               <TextField fullWidth label='Username' placeholder='carterLeonard' />
             </Grid> */}
             <Grid item xs={12} sm={6}>
-              <TextField fullWidth type='text' label='Email' placeholder='carterleonard@gmail.com' />
+              <TextField fullWidth type='text' name='sn' label='Sn' placeholder='Sn' value={contest.sn} onChange={handleContestChange} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField fullWidth type='text' label='Title' placeholder='Title' />
+              <TextField fullWidth type='text' name='title' label='Title' placeholder='Title' value={contest.title} onChange={handleContestChange} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
@@ -114,6 +176,9 @@ const FormLayoutsSeparator = () => {
                   defaultValue='N'
                   id='form-layouts-separator-select'
                   labelId='form-layouts-separator-select-label'
+                  name='delYn'
+                  value={contest.delYn}
+                  onChange={handleContestChange}
                 >
                   <MenuItem value='Y'>Y</MenuItem>
                   <MenuItem value='N'>N</MenuItem>
@@ -121,7 +186,7 @@ const FormLayoutsSeparator = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField fullWidth type='text' multiline label='Description' minRows={2} placeholder='Description' />
+              <TextField fullWidth type='text' name='description' multiline label='Description' minRows={2} placeholder='Description' value={contest.description} onChange={handleContestChange} />
             </Grid>
             <Grid item xs={12}>
               <Divider sx={{ marginBottom: 0 }} />
@@ -129,11 +194,14 @@ const FormLayoutsSeparator = () => {
           </Grid>
         </CardContent>
         <CardActions>
-          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
+          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={() => insert()}>
             Submit
           </Button>
           <Button size='large' color='secondary' variant='outlined' onClick={() => router.push("/contest")}>
             Cancel
+          </Button>
+          <Button size='large' color='warning' variant='outlined' onClick={() => del()}>
+            Delete
           </Button>
         </CardActions>
       </form>
