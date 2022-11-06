@@ -25,10 +25,10 @@ const columns = [
     format: value => value.toLocaleString('en-US')
   },
   {
-    id: 'description',
-    label: 'Description',
+    id: 'delYn',
+    label: 'DelYn',
     minWidth: 170,
-    align: 'right',
+    align: 'center',
     format: value => value.toLocaleString('en-US')
   },
   {

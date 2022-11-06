@@ -26,6 +26,7 @@ import DatePicker from 'react-datepicker'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import router, { useRouter } from 'next/router'
+import { submit } from 'src/util/FetchUtil'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Contest Year' autoComplete='off' />
@@ -45,17 +46,13 @@ const FormLayoutsSeparator = () => {
   
   useEffect(() => {
     if (router.query.yr != undefined) {
-      fetch("http://localhost:8080/v1/api/dypc/get", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(contest),
-      }).then((res) => res.json())
-        // .catch((error) => console.log(error))
-        .then((res) => {
-          setContest(res)
-        });
+      submit({
+        url: "/v1/api/dypc/get",
+        body: contest,
+        success: (res) => {
+          setContest(res);
+        }
+      });
     }
   }, [])
 
@@ -107,32 +104,23 @@ const FormLayoutsSeparator = () => {
   }
 
   const insert = () => {
-    fetch("http://localhost:8080/v1/api/dypc/save", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(contest),
-    }).then((res) => res.json())
-      // .catch((error) => console.log(error))
-      .then((res) => {
-        router.push("/contest")
-      });
+    submit({
+      url: "/v1/api/dypc/save",
+      body: contest,
+      success: (res) => {
+        setContest(res)
+      }
+    });
   }
 
   const del = () => {
-    fetch("http://localhost:8080/v1/api/dypc/delete", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(contest),
-    }).then((res) => router.push("/contest"))
-      // .catch((error) => console.log(error))
-      /*.then((res) => {
-        console.log(res);
+    submit({
+      url: "/v1/api/dypc/delete",
+      body: contest,
+      success: (res) => {
         router.push("/contest")
-      });*/
+      }
+    });
   }
 
   return (
@@ -163,7 +151,7 @@ const FormLayoutsSeparator = () => {
               <TextField fullWidth label='Username' placeholder='carterLeonard' />
             </Grid> */}
             <Grid item xs={12} sm={6}>
-              <TextField fullWidth type='text' name='sn' label='Sn' placeholder='Sn' value={contest.sn} onChange={handleContestChange} />
+              <TextField fullWidth type='text' name='sn' label='Sn' placeholder='Sn' value={contest.sn} onChange={handleContestChange} disabled/>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField fullWidth type='text' name='title' label='Title' placeholder='Title' value={contest.title} onChange={handleContestChange} />
@@ -200,7 +188,7 @@ const FormLayoutsSeparator = () => {
           <Button size='large' color='secondary' variant='outlined' onClick={() => router.push("/contest")}>
             Cancel
           </Button>
-          <Button size='large' color='warning' variant='outlined' onClick={() => del()}>
+          <Button size='large' color='warning' variant='contained' onClick={() => del()}>
             Delete
           </Button>
         </CardActions>
