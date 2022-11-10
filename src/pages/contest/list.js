@@ -13,6 +13,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import CardActions from '@mui/material/CardActions'
 import router from 'next/router'
+import { submit } from 'src/util/FetchUtil'
 
 const columns = [
   { id: 'yr', label: 'Year', minWidth: 170 },
@@ -62,7 +63,7 @@ function createData(name, code, population, size) {
 //   createData('Brazil', 'BR', 210147125, 8515767)
 // ]
 
-const TableStickyHeader = () => {
+const List = () => {
   // ** States
   const [page, setPage] = useState(0)
   const [rows, setRows] = useState([]);
@@ -78,12 +79,13 @@ const TableStickyHeader = () => {
   }
 
   useEffect(() => {
-    fetch("http://localhost:8080/v1/api/dypc/list", { method: "GET" })
-      .then((res) => res.json())
-      // .catch((error) => console.log(error))
-      .then((res) => {
+    submit({
+      url: "/v1/api/dypc/list",
+      // body: contest,
+      success: (res) => {
         setRows(res);
-      });
+      }
+    });
   }, []);
 
   return (
@@ -149,4 +151,4 @@ const TableStickyHeader = () => {
   )
 }
 
-export default TableStickyHeader
+export default List

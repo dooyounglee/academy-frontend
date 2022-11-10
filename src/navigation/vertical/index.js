@@ -32,6 +32,11 @@ const navigation = () => {
       path: '/contest',
     },
     {
+      title: 'Problem',
+      icon: AccessPoint,
+      path: '/problem',
+    },
+    {
       sectionTitle: 'Pages'
     },
     {
