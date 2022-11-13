@@ -22,15 +22,21 @@ const columns = [
   {
     id: 'question',
     label: 'Question',
-    minWidth: 170,
+    minWidth: 1000,
     align: 'left',
     format: value => <Markdown>{value}</Markdown>//value.toLocaleString('en-US')
   },
   {
     id: 'detail',
     label: 'Detail',
-    minWidth: 170,
-    align: 'right'
+    minWidth: 150,
+    align: 'center'
+  },
+  {
+    id: 'variables',
+    label: 'Variables',
+    minWidth: 150,
+    align: 'center'
   }
 ]
 function createData(name, code, population, size) {
@@ -74,7 +80,7 @@ const List = () => {
 
   useEffect(() => {
     submit({
-      url: "/v1/api/dypb/list",
+      url: "/v1/api/dypb001/list",
       // body: contest,
       success: (res) => {
         setRows(res);
@@ -115,6 +121,17 @@ const List = () => {
                             query: { problemNo: row['problemNo'] }
                           })}>
                             Detail
+                          </Button>
+                        </TableCell>
+                      )
+                    } else if (column.id === "variables") {
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          <Button size='large' type='button' sx={{ mr: 2 }} variant='contained' onClick={() => router.push({
+                            pathname: "/problem/variables",
+                            query: { problemNo: row['problemNo'] }
+                          })}>
+                            Variables
                           </Button>
                         </TableCell>
                       )

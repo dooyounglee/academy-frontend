@@ -46,7 +46,7 @@ const FormLayoutsSeparator = () => {
   useEffect(() => {
     if (router.query.problemNo != undefined) {
       submit({
-        url: "/v1/api/dypb/get",
+        url: "/v1/api/dypb001/get",
         body: {
           ...problem,
           "problemNo": router.query.problemNo,
@@ -71,7 +71,7 @@ const FormLayoutsSeparator = () => {
 
   const insert = () => {
     submit({
-      url: "/v1/api/dypb/save",
+      url: "/v1/api/dypb001/save",
       body: problem,
       success: (res) => {
         setProblem(res)
@@ -81,18 +81,13 @@ const FormLayoutsSeparator = () => {
 
   const del = () => {
     submit({
-      url: "/v1/api/dypb/delete",
+      url: "/v1/api/dypb001/delete",
       body: problem,
       success: (res) => {
         router.push("/problem")
       }
     });
   }
-
-  const content = `
-  Be **bold**  
-  But not too <b>bold</b>
-  `;
 
   return (
     <Card>
@@ -127,8 +122,6 @@ const FormLayoutsSeparator = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={12}>
-              {/* <BlockMath math={problem.question} errorColor={'#cc0000'} />
-              <InlineMath math={problem.question} errorColor={'#cc0000'} /> */}
               <Markdown>{problem.question}</Markdown>
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -143,7 +136,13 @@ const FormLayoutsSeparator = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12}>
+              <Markdown>{problem.solution}</Markdown>
+            </Grid>
+            <Grid item xs={12} sm={12}>
               <TextField fullWidth type='text' name='solution' multiline label='Solution' minRows={2} placeholder='Solution' value={problem.solution} onChange={handleProblemChange} />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Markdown>{problem.answer}</Markdown>
             </Grid>
             <Grid item xs={12} sm={12}>
               <TextField fullWidth type='text' name='answer' multiline label='Answer' minRows={2} placeholder='Answer' value={problem.answer} onChange={handleProblemChange} />
