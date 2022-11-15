@@ -38,6 +38,9 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
+import router from 'next/router'
+import { submit } from 'src/util/FetchUtil'
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -78,6 +81,16 @@ const RegisterPage = () => {
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+
+  const handleClickSignUp = event => {
+    submit({
+      url: "/v1/api/dyus001/signup",
+      body: { ...values, role: "USER"},
+      success: (res) => {
+        router.push("/pages/login")
+      }
+    });
   }
 
   return (
@@ -164,8 +177,8 @@ const RegisterPage = () => {
             <Typography variant='body2'>Make your app management easy and fun!</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} />
-            <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField autoFocus fullWidth id='name' label='Name' sx={{ marginBottom: 4 }} onChange={handleChange('name')} />
+            <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} onChange={handleChange('email')} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
               <OutlinedInput
@@ -199,7 +212,7 @@ const RegisterPage = () => {
                 </Fragment>
               }
             />
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
+            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }} onClick={handleClickSignUp}>
               Sign up
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -212,7 +225,7 @@ const RegisterPage = () => {
                 </Link>
               </Typography>
             </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
+            {/* <Divider sx={{ my: 5 }}>or</Divider>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Link href='/' passHref>
                 <IconButton component='a' onClick={e => e.preventDefault()}>
@@ -236,7 +249,7 @@ const RegisterPage = () => {
                   <Google sx={{ color: '#db4437' }} />
                 </IconButton>
               </Link>
-            </Box>
+            </Box> */}
           </form>
         </CardContent>
       </Card>
