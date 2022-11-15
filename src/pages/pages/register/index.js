@@ -3,6 +3,7 @@ import { useState, Fragment } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -70,6 +71,7 @@ const RegisterPage = () => {
 
   // ** Hook
   const theme = useTheme()
+  const router = useRouter()
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
@@ -86,6 +88,7 @@ const RegisterPage = () => {
   const handleClickSignUp = event => {
     submit({
       url: "/v1/api/dyus001/signup",
+      notJwt: true,
       body: { ...values, role: "USER"},
       success: (res) => {
         router.push("/pages/login")

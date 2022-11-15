@@ -39,6 +39,9 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
+import { submit } from 'src/util/FetchUtil'
+import util from 'src/util'
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -78,6 +81,29 @@ const LoginPage = () => {
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+
+  const handleClickSignUp = event => {
+
+    if (util.ValueUtil.isNull(values.email)) {
+      alert("please input email"); return false;
+    }
+    if (util.ValueUtil.isNull(values.password)) {
+      alert("please input password"); return false;
+    }
+
+    submit({
+      url: "/v1/api/dyus001/signin",
+      notJwt: true,
+      body: values,
+      success: (res) => {
+        console.log(res)
+        if (res.success) {
+          sessionStorage.setItem("jwt", res.token);
+          router.push('/')
+        }
+      }
+    });
   }
 
   return (
@@ -164,7 +190,7 @@ const LoginPage = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} onChange={handleChange('email')} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -200,7 +226,7 @@ const LoginPage = () => {
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
+              onClick={() => handleClickSignUp()}
             >
               Login
             </Button>
@@ -214,7 +240,7 @@ const LoginPage = () => {
                 </Link>
               </Typography>
             </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
+            {/* <Divider sx={{ my: 5 }}>or</Divider>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Link href='/' passHref>
                 <IconButton component='a' onClick={e => e.preventDefault()}>
@@ -238,7 +264,7 @@ const LoginPage = () => {
                   <Google sx={{ color: '#db4437' }} />
                 </IconButton>
               </Link>
-            </Box>
+            </Box> */}
           </form>
         </CardContent>
       </Card>
