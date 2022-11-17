@@ -11,81 +11,168 @@ import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 import { AccessPoint } from 'mdi-material-ui'
 
+import { submit } from 'src/util/FetchUtil'
+import { useEffect, useState } from 'react'
+
 const navigation = () => {
-  return [
-    {
-      title: 'Dashboard',
-      icon: HomeOutline,
-      path: '/'
-    },
-    {
-      title: 'Account Settings',
-      icon: AccountCogOutline,
-      path: '/account-settings'
-    },
-    {
-      sectionTitle: 'Contest'
-    },
-    {
-      title: 'Contest',
-      icon: AccessPoint,
-      path: '/contest',
-    },
-    {
-      title: 'Problem',
-      icon: AccessPoint,
-      path: '/problem',
-    },
-    {
-      sectionTitle: 'Pages'
-    },
-    {
-      title: 'Login',
-      icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
-    },
-    {
-      title: 'Register',
-      icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
-    },
-    {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
-    },
-    {
-      sectionTitle: 'User Interface'
-    },
-    {
-      title: 'Typography',
-      icon: FormatLetterCase,
-      path: '/typography'
-    },
-    {
-      title: 'Icons',
-      path: '/icons',
-      icon: GoogleCirclesExtended
-    },
-    {
-      title: 'Cards',
-      icon: CreditCardOutline,
-      path: '/cards'
-    },
-    {
-      title: 'Tables',
-      icon: Table,
-      path: '/tables'
-    },
-    {
-      icon: CubeOutline,
-      title: 'Form Layouts',
-      path: '/form-layouts'
-    }
-  ]
+  const [role, setRole] = useState('')
+
+  useEffect(() => {
+    submit({
+      url: "/v1/api/dyus001/myinfo",
+      body: {},
+      success: (res) => {
+        setRole(res.returnMap.role[0].authority)
+      }
+    });
+  }, [])
+
+  if (role == 'ROLE_ADMIN') {
+    return [
+      {
+        title: 'Dashboard',
+        icon: HomeOutline,
+        path: '/'
+      },
+      {
+        title: 'Account Settings',
+        icon: AccountCogOutline,
+        path: '/account-settings'
+      },
+      {
+        sectionTitle: 'Contest'
+      },
+      {
+        title: 'Contest',
+        icon: AccessPoint,
+        path: '/contest',
+      },
+      {
+        title: 'Problem',
+        icon: AccessPoint,
+        path: '/problem',
+      },
+      {
+        sectionTitle: 'Pages'
+      },
+      {
+        title: 'Login',
+        icon: Login,
+        path: '/pages/login',
+        openInNewTab: true
+      },
+      {
+        title: 'Register',
+        icon: AccountPlusOutline,
+        path: '/pages/register',
+        openInNewTab: true
+      },
+      {
+        title: 'Error',
+        icon: AlertCircleOutline,
+        path: '/pages/error',
+        openInNewTab: true
+      },
+      {
+        sectionTitle: 'User Interface'
+      },
+      {
+        title: 'Typography',
+        icon: FormatLetterCase,
+        path: '/typography'
+      },
+      {
+        title: 'Icons',
+        path: '/icons',
+        icon: GoogleCirclesExtended
+      },
+      {
+        title: 'Cards',
+        icon: CreditCardOutline,
+        path: '/cards'
+      },
+      {
+        title: 'Tables',
+        icon: Table,
+        path: '/tables'
+      },
+      {
+        icon: CubeOutline,
+        title: 'Form Layouts',
+        path: '/form-layouts'
+      }
+    ]
+  } else if (role == 'ROLE_USER') {
+    return [
+      {
+        title: 'Dashboard',
+        icon: HomeOutline,
+        path: '/'
+      },
+      {
+        title: 'Account Settings',
+        icon: AccountCogOutline,
+        path: '/account-settings'
+      },
+      {
+        sectionTitle: 'Pages'
+      },
+      {
+        title: 'Login',
+        icon: Login,
+        path: '/pages/login',
+        openInNewTab: true
+      },
+      {
+        title: 'Register',
+        icon: AccountPlusOutline,
+        path: '/pages/register',
+        openInNewTab: true
+      },
+      {
+        title: 'Error',
+        icon: AlertCircleOutline,
+        path: '/pages/error',
+        openInNewTab: true
+      },
+      {
+        sectionTitle: 'User Interface'
+      },
+      {
+        title: 'Typography',
+        icon: FormatLetterCase,
+        path: '/typography'
+      },
+      {
+        title: 'Icons',
+        path: '/icons',
+        icon: GoogleCirclesExtended
+      },
+      {
+        title: 'Cards',
+        icon: CreditCardOutline,
+        path: '/cards'
+      },
+      {
+        title: 'Tables',
+        icon: Table,
+        path: '/tables'
+      },
+      {
+        icon: CubeOutline,
+        title: 'Form Layouts',
+        path: '/form-layouts'
+      }
+    ]
+  } else {
+    return ([
+      {
+        title: 'Contest',
+        icon: AccessPoint,
+        path: '/contest',
+      },
+    ])
+  }
 }
 
 export default navigation
