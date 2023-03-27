@@ -12,6 +12,7 @@ jobs:
       - run: npm install && CI=false npm run start
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
+          entrypoint: /home/runner/work/academy-frontend/academy-frontend
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ACADEMY_FRONTEND_E3D90 }}'
           projectId: academy-frontend-e3d90
