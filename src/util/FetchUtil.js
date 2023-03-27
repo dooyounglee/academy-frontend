@@ -14,18 +14,20 @@ const submit = (apiInfo) => {
 
     // header 없이 보낼때
     if(!apiInfo.notJwt) option.headers["X-AUTH-TOKEN"] = sessionStorage.getItem("jwt")
-    console.log(option.headers)
 
     fetch(SPRINGBOOT_URL + apiInfo.url, option)
     .then((res) => res.json())
     .then((res) => {
         console.log("res", res)
-        if (res.code !== 0) throw res
-        apiInfo.success(res)
+        if (!res.success) throw res
+        apiInfo.success(res.returnObject)
     })
     .catch((error) => {
-        console.log(error)
-        // alert(error.message)
+        console.log("errer", error)
+        if (error.msg === "인증이 실패하였습니다.") {
+            console.log("jwt 인증 실패")
+        }
+        alert(error.message)
     })
 }
 

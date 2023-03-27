@@ -22,39 +22,19 @@ const navigation = () => {
       url: "/v1/api/dyus001/myinfo",
       body: {},
       success: (res) => {
-        setRole(res.returnMap.role[0].authority)
+        setRole(res[0].authority)
       }
     });
   }, [])
 
   if (role == 'ROLE_ADMIN') {
     return [
-      {
-        title: 'Dashboard',
-        icon: HomeOutline,
-        path: '/'
-      },
-      {
-        title: 'Account Settings',
-        icon: AccountCogOutline,
-        path: '/account-settings'
-      },
-      {
-        sectionTitle: 'Contest'
-      },
-      {
-        title: 'Contest',
-        icon: AccessPoint,
-        path: '/contest',
-      },
-      {
-        title: 'Problem',
-        icon: AccessPoint,
-        path: '/problem',
-      },
-      {
-        sectionTitle: 'Pages'
-      },
+      { title: 'Dashboard', icon: HomeOutline, path: '/' },
+      { title: 'Account Settings', icon: AccountCogOutline, path: '/account-settings' },
+      { sectionTitle: 'Contest' },
+      { title: 'Contest', icon: AccessPoint, path: '/contest', },
+      { title: 'Problem', icon: AccessPoint, path: '/problem', },
+      { sectionTitle: 'Pages' },
       {
         title: 'Login',
         icon: Login,
@@ -114,27 +94,17 @@ const navigation = () => {
         icon: AccountCogOutline,
         path: '/account-settings'
       },
-      {
+      /*{
         sectionTitle: 'Pages'
       },
-      {
-        title: 'Login',
-        icon: Login,
-        path: '/pages/login',
-        openInNewTab: true
-      },
-      {
-        title: 'Register',
-        icon: AccountPlusOutline,
-        path: '/pages/register',
-        openInNewTab: true
-      },
+      { title: 'Login', icon: Login, path: '/pages/login', openInNewTab: true },
+      { title: 'Register', icon: AccountPlusOutline, path: '/pages/register', openInNewTab: true },
       {
         title: 'Error',
         icon: AlertCircleOutline,
         path: '/pages/error',
         openInNewTab: true
-      },
+      },*/
       {
         sectionTitle: 'User Interface'
       },
@@ -166,11 +136,8 @@ const navigation = () => {
     ]
   } else {
     return ([
-      {
-        title: 'Contest',
-        icon: AccessPoint,
-        path: '/contest',
-      },
+      { title: 'Login', icon: Login, path: '/pages/login' },
+      { title: 'Register', icon: AccountPlusOutline, path: '/pages/register', openInNewTab: true },
     ])
   }
 }

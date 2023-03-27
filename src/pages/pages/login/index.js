@@ -98,10 +98,8 @@ const LoginPage = () => {
       body: values,
       success: (res) => {
         console.log(res)
-        if (res.success) {
-          sessionStorage.setItem("jwt", res.token);
-          router.push('/')
-        }
+        sessionStorage.setItem("jwt", res);
+        router.push('/')
       }
     });
   }

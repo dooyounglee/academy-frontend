@@ -102,7 +102,7 @@ const FormLayoutsSeparator = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField fullWidth type='text' name='problemNo' label='ProblemNo' placeholder='ProblemNo' value={problem.problemNo} onChange={handleProblemChange} disabled/>
+              <TextField fullWidth type='text' name='problemNo' label='ProblemNo' placeholder='ProblemNo' value={problem.problemNo || ''} onChange={handleProblemChange} disabled/>
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
@@ -125,7 +125,7 @@ const FormLayoutsSeparator = () => {
               <Markdown>{problem.question}</Markdown>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField fullWidth type='text' name='question' multiline label='Question' minRows={2} placeholder='Question' value={problem.question} onChange={handleProblemChange} />
+              <TextField fullWidth type='text' name='question' multiline label='Question' minRows={2} placeholder='Question' value={problem.question || ''} onChange={handleProblemChange} />
             </Grid>
             <Grid item xs={12}>
               <Divider sx={{ marginBottom: 0 }} />
@@ -139,13 +139,13 @@ const FormLayoutsSeparator = () => {
               <Markdown>{problem.solution}</Markdown>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField fullWidth type='text' name='solution' multiline label='Solution' minRows={2} placeholder='Solution' value={problem.solution} onChange={handleProblemChange} />
+              <TextField fullWidth type='text' name='solution' multiline label='Solution' minRows={2} placeholder='Solution' value={problem.solution || ''} onChange={handleProblemChange} />
             </Grid>
             <Grid item xs={12} sm={12}>
               <Markdown>{problem.answer}</Markdown>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField fullWidth type='text' name='answer' multiline label='Answer' minRows={2} placeholder='Answer' value={problem.answer} onChange={handleProblemChange} />
+              <TextField fullWidth type='text' name='answer' multiline label='Answer' minRows={2} placeholder='Answer' value={problem.answer || ''} onChange={handleProblemChange} />
             </Grid>
             <Grid item xs={12}>
               <Divider sx={{ marginBottom: 0 }} />
@@ -156,7 +156,7 @@ const FormLayoutsSeparator = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField fullWidth type='text' name='variables' multiline label='Variables' minRows={2} placeholder='Variables' value={problem.variables} onChange={handleProblemChange} />
+              <TextField fullWidth type='text' name='variables' multiline label='Variables' minRows={2} placeholder='Variables' value={problem.variables || ''} onChange={handleProblemChange} />
             </Grid>
           </Grid>
         </CardContent>
