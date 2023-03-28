@@ -1,1 +1,1 @@
-export const SPRINGBOOT_URL = "http://localhost:8080";
+export const SPRINGBOOT_URL = "https://academy-4jo3.onrender.com/";
